@@ -1,9 +1,18 @@
+import { useEffect, useRef, useState } from 'react'
+
 const links = [
-  { label: 'Home', icon: 'home' },
+  { label: 'Home', icon: 'home', page: 'home' },
   { label: 'Grant Calls', icon: 'doc' },
   { label: 'Project Types', icon: 'pen' },
   { label: 'Research Facilities', icon: 'building' },
-  { label: 'Ongoing Projects', icon: 'refresh' },
+  {
+    label: 'Projects',
+    icon: 'projects',
+    children: [
+      { label: 'Consultancy Projects', page: 'consultancy' },
+      { label: 'Sponsored Projects', page: 'sponsored' },
+    ],
+  },
   { label: 'CSRC Activities', icon: 'calendar' },
   { label: 'IP & Incubation', icon: 'bulb' },
 ]
@@ -50,11 +59,11 @@ function Icon({ name }) {
       </svg>
     )
   }
-  if (name === 'refresh') {
+  if (name === 'projects') {
     return (
       <svg {...common}>
-        <path d="M20 12a8 8 0 1 1-2.2-5.5" />
-        <path d="M20 4.5V9h-4.5" />
+        <path d="M4 7.5h6l1.5-2H20a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8.5a1 1 0 0 1 1-1z" />
+        <path d="M3 10.5h18" />
       </svg>
     )
   }
@@ -74,7 +83,25 @@ function Icon({ name }) {
   )
 }
 
-export default function Header() {
+export default function Header({ page, onNavigate }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef(null)
+  const projectsOpen = page === 'consultancy' || page === 'sponsored'
+
+  useEffect(() => {
+    function onPointerDown(event) {
+      if (!menuRef.current?.contains(event.target)) setMenuOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => document.removeEventListener('pointerdown', onPointerDown)
+  }, [])
+
+  function choose(next) {
+    setMenuOpen(false)
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
+    onNavigate(next)
+  }
+
   return (
     <header className="site-header">
       <div className="topbar">
@@ -107,12 +134,60 @@ export default function Header() {
       </div>
 
       <nav className="main-nav" aria-label="Primary">
-        {links.map((link) => (
-          <a key={link.label} href="#" className={link.label === 'Home' ? 'is-active' : undefined}>
-            <Icon name={link.icon} />
-            {link.label}
-          </a>
-        ))}
+        {links.map((link) =>
+          link.children ? (
+            <div
+              key={link.label}
+              className={`nav-drop${menuOpen ? ' is-open' : ''}`}
+              ref={menuRef}
+            >
+              <button
+                type="button"
+                className={`nav-trigger${projectsOpen ? ' is-active' : ''}`}
+                aria-haspopup="true"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((open) => !open)}
+              >
+                <Icon name={link.icon} />
+                {link.label}
+                <svg className="nav-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 9.5 12 15l6-5.5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <div className="nav-drop-panel" role="menu" aria-label="Projects">
+                {link.children.map((child) => (
+                  <button
+                    key={child.page}
+                    type="button"
+                    role="menuitem"
+                    className={page === child.page ? 'is-active' : undefined}
+                    onClick={() => choose(child.page)}
+                  >
+                    {child.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <a
+              key={link.label}
+              href={link.page === 'home' ? '#home' : '#'}
+              className={link.page && page === link.page ? 'is-active' : undefined}
+              aria-current={link.page && page === link.page ? 'page' : undefined}
+              onClick={
+                link.page
+                  ? (event) => {
+                      event.preventDefault()
+                      choose(link.page)
+                    }
+                  : undefined
+              }
+            >
+              <Icon name={link.icon} />
+              {link.label}
+            </a>
+          ),
+        )}
       </nav>
     </header>
   )
