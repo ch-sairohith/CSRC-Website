@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { formatCell, projectSets } from '../data/loadProjects.js'
 
 const PAGE_SIZE = 8
+const SEARCH_FIELDS = ['Funding Agency', 'Status', 'Department', 'Principal Invg', 'CO PI 1 Inst']
 
 function statusClass(value) {
   const key = value.toLowerCase()
@@ -9,16 +10,31 @@ function statusClass(value) {
   return ''
 }
 
+function matchesSearch(row, query) {
+  return SEARCH_FIELDS.some((field) => (row[field] ?? '').toLowerCase().includes(query))
+}
+
 export default function Projects({ kind }) {
   const set = projectSets[kind]
+  const [query, setQuery] = useState('')
   const [page, setPage] = useState(0)
-  const pageCount = Math.max(1, Math.ceil(set.rows.length / PAGE_SIZE))
+  const needle = query.trim().toLowerCase()
+  const filtered = useMemo(
+    () => (needle ? set.rows.filter((row) => matchesSearch(row, needle)) : set.rows),
+    [needle, set.rows],
+  )
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const start = page * PAGE_SIZE
-  const visible = set.rows.slice(start, start + PAGE_SIZE)
+  const visible = filtered.slice(start, start + PAGE_SIZE)
   const end = start + visible.length
 
   function showPage(next) {
     setPage(Math.min(pageCount - 1, Math.max(0, next)))
+  }
+
+  function updateQuery(value) {
+    setQuery(value)
+    setPage(0)
   }
 
   useEffect(() => {
@@ -29,11 +45,31 @@ export default function Projects({ kind }) {
     <section className="projects-page" aria-labelledby="projects-heading">
       <div className="section-wrap">
         <h1 id="projects-heading" tabIndex={-1}>{set.title}</h1>
-        <p className="projects-lead">{set.rows.length} projects from the 31 March 2026 records.</p>
+        <p className="projects-lead">
+          {needle
+            ? `${filtered.length} of ${set.rows.length} projects match your search.`
+            : `${set.rows.length} projects from the 31 March 2026 records.`}
+        </p>
+
+        <form className="projects-search" role="search" onSubmit={(event) => event.preventDefault()}>
+          <label htmlFor="projects-query">Search by funding agency, status, department, or professor name</label>
+          <input
+            id="projects-query"
+            type="search"
+            value={query}
+            placeholder="Search by funding agency, status, department, or professor name"
+            onChange={(event) => updateQuery(event.target.value)}
+          />
+          {query ? (
+            <button type="button" onClick={() => updateQuery('')}>
+              Clear
+            </button>
+          ) : null}
+        </form>
 
         <div className="projects-controls">
           <p className="projects-range">
-            Rows {set.rows.length === 0 ? 0 : start + 1}–{end} of {set.rows.length}
+            Rows {filtered.length === 0 ? 0 : start + 1}–{end} of {filtered.length}
           </p>
           <div className="projects-arrows">
             <button
@@ -71,19 +107,27 @@ export default function Projects({ kind }) {
               </tr>
             </thead>
             <tbody>
-              {visible.map((row) => (
-                <tr key={row['Proj No.']}>
-                  {set.columns.map((column) => (
-                    <td key={column.key} className={column.wide ? 'is-wide' : undefined}>
-                      {column.key === 'Status' && row[column.key] ? (
-                        <span className={`project-status ${statusClass(row[column.key])}`}>{row[column.key]}</span>
-                      ) : (
-                        formatCell(row[column.key], column.format)
-                      )}
-                    </td>
-                  ))}
+              {visible.length === 0 ? (
+                <tr>
+                  <td className="projects-empty" colSpan={set.columns.length}>
+                    No projects match that funding agency, status, department, or professor name.
+                  </td>
                 </tr>
-              ))}
+              ) : (
+                visible.map((row) => (
+                  <tr key={row['Proj No.']}>
+                    {set.columns.map((column) => (
+                      <td key={column.key} className={column.wide ? 'is-wide' : undefined}>
+                        {column.key === 'Status' && row[column.key] ? (
+                          <span className={`project-status ${statusClass(row[column.key])}`}>{row[column.key]}</span>
+                        ) : (
+                          formatCell(row[column.key], column.format)
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

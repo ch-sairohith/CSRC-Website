@@ -85,7 +85,12 @@ function Icon({ name }) {
 
 export default function Header({ page, onNavigate }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [navOpen, setNavOpen] = useState(false)
+  const [narrow, setNarrow] = useState(false)
   const menuRef = useRef(null)
+  const navRef = useRef(null)
+  const toggleRef = useRef(null)
+  const closeRef = useRef(null)
   const projectsOpen = page === 'consultancy' || page === 'sponsored'
 
   useEffect(() => {
@@ -96,8 +101,61 @@ export default function Header({ page, onNavigate }) {
     return () => document.removeEventListener('pointerdown', onPointerDown)
   }, [])
 
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 1100px)')
+    function sync() {
+      setNarrow(query.matches)
+      if (!query.matches) setNavOpen(false)
+    }
+    sync()
+    query.addEventListener('change', sync)
+    return () => query.removeEventListener('change', sync)
+  }, [])
+
+  useEffect(() => {
+    if (!navOpen) return undefined
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    closeRef.current?.focus()
+
+    function onKeyDown(event) {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setNavOpen(false)
+        setMenuOpen(false)
+        toggleRef.current?.focus()
+        return
+      }
+      if (event.key !== 'Tab' || !navRef.current) return
+      const focusable = [...navRef.current.querySelectorAll('a, button')]
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (!first || !last) return
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [navOpen])
+
+  function closeNav() {
+    setNavOpen(false)
+    setMenuOpen(false)
+    toggleRef.current?.focus()
+  }
+
   function choose(next) {
     setMenuOpen(false)
+    setNavOpen(false)
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
     onNavigate(next)
   }
@@ -133,7 +191,39 @@ export default function Header({ page, onNavigate }) {
         </div>
       </div>
 
-      <nav className="main-nav" aria-label="Primary">
+      <button
+        ref={toggleRef}
+        type="button"
+        className="nav-toggle"
+        aria-expanded={navOpen}
+        aria-controls="primary-nav"
+        onClick={() => setNavOpen((open) => !open)}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+        </svg>
+        Menu
+      </button>
+
+      {navOpen ? (
+        <button type="button" className="nav-backdrop" aria-label="Close menu" onClick={closeNav} />
+      ) : null}
+
+      <nav
+        id="primary-nav"
+        ref={navRef}
+        className={`main-nav${navOpen ? ' is-open' : ''}`}
+        aria-label="Primary"
+        inert={narrow && !navOpen ? true : undefined}
+      >
+        <div className="nav-drawer-head">
+          <p>Menu</p>
+          <button ref={closeRef} type="button" className="nav-close" aria-label="Close menu" onClick={closeNav}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
         {links.map((link) =>
           link.children ? (
             <div
@@ -180,7 +270,7 @@ export default function Header({ page, onNavigate }) {
                       event.preventDefault()
                       choose(link.page)
                     }
-                  : undefined
+                  : () => setNavOpen(false)
               }
             >
               <Icon name={link.icon} />

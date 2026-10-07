@@ -1,7 +1,7 @@
 import consultancyCsv from './consultancy-projects.csv?raw'
 import sponsoredCsv from './sponsored-projects.csv?raw'
 
-function parseCsv(text) {
+export function parseCsv(text) {
   const rows = []
   let row = []
   let cell = ''
