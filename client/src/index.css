@@ -1397,6 +1397,17 @@ img {
   white-space: normal;
 }
 
+.projects-table a {
+  color: var(--maroon);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.projects-table a:hover {
+  color: var(--maroon-deep);
+}
+
 .projects-empty {
   padding: 1.2rem 0.9rem;
   color: #4b4b4b;

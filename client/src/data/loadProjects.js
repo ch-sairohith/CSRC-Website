@@ -1,4 +1,5 @@
 import consultancyCsv from './consultancy-projects.csv?raw'
+import grantsCsv from './grant-calls.csv?raw'
 import sponsoredCsv from './sponsored-projects.csv?raw'
 
 export function parseCsv(text) {
@@ -105,6 +106,23 @@ export const projectSets = {
       { key: 'Funding Agency', label: 'Funding Agency', wide: true },
       { key: 'Status', label: 'Status' },
       { key: 'Project Cost', label: 'Project Cost', format: 'money' },
+    ],
+  },
+  grants: {
+    title: 'Grant Calls',
+    noun: 'calls',
+    summary: '{count} grant calls and proposals from the CSRC announcements page.',
+    searchLabel: 'Search by title, funding agency, deadline, or category',
+    emptyMessage: 'No calls match that title, funding agency, deadline, or category.',
+    searchFields: ['Title', 'Funding Agency', 'Deadline', 'Category'],
+    rowKey: 'id',
+    rows: parseCsv(grantsCsv),
+    columns: [
+      { key: 'Category', label: 'Category' },
+      { key: 'Title', label: 'Title', wide: true },
+      { key: 'Funding Agency', label: 'Funding Agency', wide: true },
+      { key: 'Deadline', label: 'Deadline' },
+      { key: 'Link', label: 'Link', format: 'link' },
     ],
   },
 }
