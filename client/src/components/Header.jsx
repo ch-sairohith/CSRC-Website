@@ -1,9 +1,18 @@
+import { useEffect, useRef, useState } from 'react'
+
 const links = [
-  { label: 'Home', icon: 'home' },
-  { label: 'Grant Calls', icon: 'doc' },
+  { label: 'Home', icon: 'home', page: 'home' },
+  { label: 'Grant Calls', icon: 'doc', page: 'grants' },
   { label: 'Project Types', icon: 'pen' },
   { label: 'Research Facilities', icon: 'building' },
-  { label: 'Ongoing Projects', icon: 'refresh' },
+  {
+    label: 'Projects',
+    icon: 'projects',
+    children: [
+      { label: 'Consultancy Projects', page: 'consultancy' },
+      { label: 'Sponsored Projects', page: 'sponsored' },
+    ],
+  },
   { label: 'CSRC Activities', icon: 'calendar' },
   { label: 'IP & Incubation', icon: 'bulb' },
 ]
@@ -50,11 +59,11 @@ function Icon({ name }) {
       </svg>
     )
   }
-  if (name === 'refresh') {
+  if (name === 'projects') {
     return (
       <svg {...common}>
-        <path d="M20 12a8 8 0 1 1-2.2-5.5" />
-        <path d="M20 4.5V9h-4.5" />
+        <path d="M4 7.5h6l1.5-2H20a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8.5a1 1 0 0 1 1-1z" />
+        <path d="M3 10.5h18" />
       </svg>
     )
   }
@@ -74,7 +83,83 @@ function Icon({ name }) {
   )
 }
 
-export default function Header() {
+export default function Header({ page, onNavigate }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [navOpen, setNavOpen] = useState(false)
+  const [narrow, setNarrow] = useState(false)
+  const menuRef = useRef(null)
+  const navRef = useRef(null)
+  const toggleRef = useRef(null)
+  const closeRef = useRef(null)
+  const projectsOpen = page === 'consultancy' || page === 'sponsored'
+
+  useEffect(() => {
+    function onPointerDown(event) {
+      if (!menuRef.current?.contains(event.target)) setMenuOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => document.removeEventListener('pointerdown', onPointerDown)
+  }, [])
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 1100px)')
+    function sync() {
+      setNarrow(query.matches)
+      if (!query.matches) setNavOpen(false)
+    }
+    sync()
+    query.addEventListener('change', sync)
+    return () => query.removeEventListener('change', sync)
+  }, [])
+
+  useEffect(() => {
+    if (!navOpen) return undefined
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    closeRef.current?.focus()
+
+    function onKeyDown(event) {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setNavOpen(false)
+        setMenuOpen(false)
+        toggleRef.current?.focus()
+        return
+      }
+      if (event.key !== 'Tab' || !navRef.current) return
+      const focusable = [...navRef.current.querySelectorAll('a, button')]
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (!first || !last) return
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [navOpen])
+
+  function closeNav() {
+    setNavOpen(false)
+    setMenuOpen(false)
+    toggleRef.current?.focus()
+  }
+
+  function choose(next) {
+    setMenuOpen(false)
+    setNavOpen(false)
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
+    onNavigate(next)
+  }
+
   return (
     <header className="site-header">
       <div className="topbar">
@@ -106,13 +191,93 @@ export default function Header() {
         </div>
       </div>
 
-      <nav className="main-nav" aria-label="Primary">
-        {links.map((link) => (
-          <a key={link.label} href="#" className={link.label === 'Home' ? 'is-active' : undefined}>
-            <Icon name={link.icon} />
-            {link.label}
-          </a>
-        ))}
+      <button
+        ref={toggleRef}
+        type="button"
+        className="nav-toggle"
+        aria-expanded={navOpen}
+        aria-controls="primary-nav"
+        onClick={() => setNavOpen((open) => !open)}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+        </svg>
+        Menu
+      </button>
+
+      {navOpen ? (
+        <button type="button" className="nav-backdrop" aria-label="Close menu" onClick={closeNav} />
+      ) : null}
+
+      <nav
+        id="primary-nav"
+        ref={navRef}
+        className={`main-nav${navOpen ? ' is-open' : ''}`}
+        aria-label="Primary"
+        inert={narrow && !navOpen ? true : undefined}
+      >
+        <div className="nav-drawer-head">
+          <p>Menu</p>
+          <button ref={closeRef} type="button" className="nav-close" aria-label="Close menu" onClick={closeNav}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+        {links.map((link) =>
+          link.children ? (
+            <div
+              key={link.label}
+              className={`nav-drop${menuOpen ? ' is-open' : ''}`}
+              ref={menuRef}
+            >
+              <button
+                type="button"
+                className={`nav-trigger${projectsOpen ? ' is-active' : ''}`}
+                aria-haspopup="true"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((open) => !open)}
+              >
+                <Icon name={link.icon} />
+                {link.label}
+                <svg className="nav-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 9.5 12 15l6-5.5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <div className="nav-drop-panel" role="menu" aria-label="Projects">
+                {link.children.map((child) => (
+                  <button
+                    key={child.page}
+                    type="button"
+                    role="menuitem"
+                    className={page === child.page ? 'is-active' : undefined}
+                    onClick={() => choose(child.page)}
+                  >
+                    {child.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <a
+              key={link.label}
+              href={link.page === 'home' ? '#home' : '#'}
+              className={link.page && page === link.page ? 'is-active' : undefined}
+              aria-current={link.page && page === link.page ? 'page' : undefined}
+              onClick={
+                link.page
+                  ? (event) => {
+                      event.preventDefault()
+                      choose(link.page)
+                    }
+                  : () => setNavOpen(false)
+              }
+            >
+              <Icon name={link.icon} />
+              {link.label}
+            </a>
+          ),
+        )}
       </nav>
     </header>
   )
