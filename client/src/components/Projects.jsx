@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { formatCell, projectSets } from '../data/loadProjects.js'
 
 const PAGE_SIZE = 8
-const DEFAULT_SEARCH_FIELDS = ['Funding Agency', 'Status', 'Department', 'Principal Invg', 'CO PI 1 Inst']
-const DEFAULT_SEARCH_LABEL = 'Search by funding agency, status, department, or professor name'
+const BLANK = '__blank__'
 
 function statusClass(value) {
   const key = value.toLowerCase()
@@ -11,22 +10,41 @@ function statusClass(value) {
   return ''
 }
 
-function matchesSearch(row, query, fields) {
-  return fields.some((field) => (row[field] ?? '').toLowerCase().includes(query))
+function cellValue(row, key) {
+  return (row[key] ?? '').trim()
 }
 
 export default function Projects({ kind }) {
   const set = projectSets[kind]
-  const searchFields = set.searchFields ?? DEFAULT_SEARCH_FIELDS
-  const searchLabel = set.searchLabel ?? DEFAULT_SEARCH_LABEL
   const noun = set.noun ?? 'projects'
-  const [query, setQuery] = useState('')
+  const filterColumns = set.columns.filter((column) => column.format !== 'link')
+  const [filterColumn, setFilterColumn] = useState('')
+  const [filterValue, setFilterValue] = useState('')
   const [page, setPage] = useState(0)
-  const needle = query.trim().toLowerCase()
-  const filtered = useMemo(
-    () => (needle ? set.rows.filter((row) => matchesSearch(row, needle, searchFields)) : set.rows),
-    [needle, searchFields, set.rows],
-  )
+  const activeColumn = filterColumns.find((column) => column.key === filterColumn)
+  const valueOptions = useMemo(() => {
+    if (!activeColumn) return []
+    const values = new Set()
+    let hasBlank = false
+    for (const row of set.rows) {
+      const value = cellValue(row, activeColumn.key)
+      if (value) values.add(value)
+      else hasBlank = true
+    }
+    const options = [...values].sort((left, right) =>
+      left.localeCompare(right, 'en', { numeric: true, sensitivity: 'base' }),
+    )
+    if (hasBlank) options.unshift(BLANK)
+    return options
+  }, [activeColumn, set.rows])
+  const filtering = Boolean(activeColumn && filterValue)
+  const filtered = useMemo(() => {
+    if (!filtering) return set.rows
+    return set.rows.filter((row) => {
+      const value = cellValue(row, activeColumn.key)
+      return filterValue === BLANK ? value === '' : value === filterValue
+    })
+  }, [activeColumn, filterValue, filtering, set.rows])
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const start = page * PAGE_SIZE
   const visible = filtered.slice(start, start + PAGE_SIZE)
@@ -36,8 +54,20 @@ export default function Projects({ kind }) {
     setPage(Math.min(pageCount - 1, Math.max(0, next)))
   }
 
-  function updateQuery(value) {
-    setQuery(value)
+  function chooseColumn(value) {
+    setFilterColumn(value)
+    setFilterValue('')
+    setPage(0)
+  }
+
+  function chooseValue(value) {
+    setFilterValue(value)
+    setPage(0)
+  }
+
+  function clearFilter() {
+    setFilterColumn('')
+    setFilterValue('')
     setPage(0)
   }
 
@@ -50,22 +80,41 @@ export default function Projects({ kind }) {
       <div className="section-wrap">
         <h1 id="projects-heading" tabIndex={-1}>{set.title}</h1>
         <p className="projects-lead">
-          {needle
-            ? `${filtered.length} of ${set.rows.length} ${noun} match your search.`
+          {filtering
+            ? `${filtered.length} of ${set.rows.length} ${noun} match ${activeColumn.label}.`
             : (set.summary ?? `${set.rows.length} projects from the 31 March 2026 records.`).replace('{count}', set.rows.length)}
         </p>
 
-        <form className="projects-search" role="search" onSubmit={(event) => event.preventDefault()}>
-          <label htmlFor="projects-query">{searchLabel}</label>
-          <input
-            id="projects-query"
-            type="search"
-            value={query}
-            placeholder={searchLabel}
-            onChange={(event) => updateQuery(event.target.value)}
-          />
-          {query ? (
-            <button type="button" onClick={() => updateQuery('')}>
+        <form className="projects-search" onSubmit={(event) => event.preventDefault()}>
+          <label htmlFor="projects-filter-column">Column</label>
+          <select
+            id="projects-filter-column"
+            value={filterColumn}
+            onChange={(event) => chooseColumn(event.target.value)}
+          >
+            <option value="">All columns</option>
+            {filterColumns.map((column) => (
+              <option key={column.key} value={column.key}>
+                {column.label}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="projects-filter-value">Value</label>
+          <select
+            id="projects-filter-value"
+            value={filterValue}
+            disabled={!activeColumn}
+            onChange={(event) => chooseValue(event.target.value)}
+          >
+            <option value="">{activeColumn ? 'All values' : 'Choose a column first'}</option>
+            {valueOptions.map((value) => (
+              <option key={value} value={value}>
+                {value === BLANK ? 'Blank' : formatCell(value, activeColumn.format)}
+              </option>
+            ))}
+          </select>
+          {filterColumn || filterValue ? (
+            <button type="button" onClick={clearFilter}>
               Clear
             </button>
           ) : null}
@@ -114,7 +163,9 @@ export default function Projects({ kind }) {
               {visible.length === 0 ? (
                 <tr>
                   <td className="projects-empty" colSpan={set.columns.length}>
-                    {set.emptyMessage ?? 'No projects match that funding agency, status, department, or professor name.'}
+                    {activeColumn
+                      ? `No ${noun} match that ${activeColumn.label}.`
+                      : `No ${noun} to show.`}
                   </td>
                 </tr>
               ) : (

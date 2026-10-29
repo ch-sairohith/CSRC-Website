@@ -1339,26 +1339,20 @@ img {
 .projects-search {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  max-width: 36rem;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.7rem;
   margin-top: 1.15rem;
 }
 
 .projects-search label {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  font-weight: 700;
+  color: var(--maroon);
 }
 
-.projects-search input {
-  flex: 1;
+.projects-search select {
+  flex: 1 1 16rem;
   min-width: 0;
+  max-width: 34rem;
   border: 1px solid #c8c1b6;
   background: #fff;
   padding: 0.65rem 0.85rem;
@@ -1366,14 +1360,15 @@ img {
   font: inherit;
 }
 
-.projects-search input:focus {
+.projects-search select:disabled {
+  background: #f3f0ea;
+  color: #6b6b6b;
+}
+
+.projects-search select:focus {
   outline: 2px solid var(--maroon);
   outline-offset: 1px;
   border-color: var(--maroon);
-}
-
-.projects-search input::-webkit-search-cancel-button {
-  appearance: none;
 }
 
 .projects-search button {
