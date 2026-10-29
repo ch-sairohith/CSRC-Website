@@ -15,7 +15,7 @@ export default function Footer() {
           <a href="#">IIT Tirupati</a>
           <a href="#">CSRC Internal Site</a>
         </div>
-        <div>
+        <div id="contact">
           <h2>Contact Us</h2>
           <p>
             Centre for Sponsored Research &amp; Consultancy,

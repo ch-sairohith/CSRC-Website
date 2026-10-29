@@ -3,19 +3,20 @@ import Announcements from './Announcements.jsx'
 
 const links = [
   { label: 'Home', icon: 'home', page: 'home' },
-  { label: 'Grant Calls', icon: 'doc', page: 'grants' },
-  { label: 'Project Types', icon: 'pen' },
-  { label: 'Research Facilities', icon: 'building' },
   {
     label: 'Projects',
     icon: 'projects',
     children: [
-      { label: 'Consultancy Projects', page: 'consultancy' },
       { label: 'Sponsored Projects', page: 'sponsored' },
+      { label: 'Consultancy Projects', page: 'consultancy' },
     ],
   },
+  { label: 'Research Facilities', icon: 'building' },
+  { label: 'Grant Calls', icon: 'doc', page: 'grants' },
+  { label: 'Outcomes of CSRC', icon: 'chart' },
   { label: 'CSRC Activities', icon: 'calendar' },
-  { label: 'IP & Incubation', icon: 'bulb' },
+  { label: 'IP and Incubation', icon: 'bulb' },
+  { label: 'Contacts', icon: 'mail', href: '#contact' },
 ]
 
 function Icon({ name }) {
@@ -44,14 +45,6 @@ function Icon({ name }) {
       </svg>
     )
   }
-  if (name === 'pen') {
-    return (
-      <svg {...common}>
-        <path d="M4 20h4l10.5-10.5a2 2 0 0 0 0-2.8l-.7-.7a2 2 0 0 0-2.8 0L4 16.5z" />
-        <path d="M13.5 6.5l4 4" />
-      </svg>
-    )
-  }
   if (name === 'building') {
     return (
       <svg {...common}>
@@ -73,6 +66,22 @@ function Icon({ name }) {
       <svg {...common}>
         <rect x="4" y="5" width="16" height="15" rx="1.5" />
         <path d="M8 3.5v4M16 3.5v4M4 10h16" />
+      </svg>
+    )
+  }
+  if (name === 'chart') {
+    return (
+      <svg {...common}>
+        <path d="M4 19.5h16" />
+        <path d="M7 16.5v-4M12 16.5V8M17 16.5v-7" />
+      </svg>
+    )
+  }
+  if (name === 'mail') {
+    return (
+      <svg {...common}>
+        <rect x="3.5" y="6" width="17" height="12" rx="1.5" />
+        <path d="m4.5 7.5 7.5 5.5 7.5-5.5" />
       </svg>
     )
   }
@@ -103,7 +112,7 @@ export default function Header({ page, onNavigate }) {
   }, [])
 
   useEffect(() => {
-    const query = window.matchMedia('(max-width: 1100px)')
+    const query = window.matchMedia('(max-width: 1240px)')
     function sync() {
       setNarrow(query.matches)
       if (!query.matches) setNavOpen(false)
@@ -262,7 +271,7 @@ export default function Header({ page, onNavigate }) {
           ) : (
             <a
               key={link.label}
-              href={link.page === 'home' ? '#home' : '#'}
+              href={link.page === 'home' ? '#home' : (link.href ?? '#')}
               className={link.page && page === link.page ? 'is-active' : undefined}
               aria-current={link.page && page === link.page ? 'page' : undefined}
               onClick={
@@ -271,7 +280,13 @@ export default function Header({ page, onNavigate }) {
                       event.preventDefault()
                       choose(link.page)
                     }
-                  : () => setNavOpen(false)
+                  : (event) => {
+                      setNavOpen(false)
+                      setMenuOpen(false)
+                      if (!link.href) return
+                      event.preventDefault()
+                      document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    }
               }
             >
               <Icon name={link.icon} />
