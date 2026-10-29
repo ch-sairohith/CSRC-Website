@@ -4,31 +4,32 @@ export default function About() {
       <div className="section-wrap">
         <h2>About Us</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante
-          venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum.
-          Aenean lacinia bibendum nulla sed consectetur.
-        </p>
-        <p>
-          Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui.
-          Vestibulum id ligula porta felis euismod semper. Maecenas faucibus mollis interdum. Nullam
-          quis risus eget urna mollis ornare vel eu leo.
+          CSRC actively fosters interactions with industries, research organizations, academic
+          institutions, and government agencies. We provide central administrative support to manage
+          sponsored projects, consulting assignments, and technology licensing effortlessly.
         </p>
 
         <div className="mission-vision">
           <article>
-            <h3>Our Mission</h3>
+            <h3>Dean (CSRC), IIT Tirupati</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              At CSRC, our vision is to transform innovative research into actionable technological
+              solutions. By fostering strong academia-industry partnerships, we facilitate
+              high-impact consultancy, sponsored R&amp;D, and technology commercialization that
+              address critical societal and industrial challenges. We invite researchers, industry
+              leaders, and public institutions to explore collaborative opportunities with IIT
+              Tirupati as we continue to advance frontier science and technology.
             </p>
           </article>
           <article>
-            <h3>Our Vision</h3>
+            <h3>Director, IIT Tirupati</h3>
             <p>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-              officia deserunt mollit anim id est laborum.
+              Innovation flourishes at the intersection of academia and industry. The Centre for
+              Sponsored Research and Consultancy (CSRC) at IIT Tirupati is committed to translating
+              world-class research into real-world impact. Through collaborative R&amp;D,
+              consultancy, and technology transfer, we empower our faculty and students to solve
+              complex industry problems. We welcome you to partner with us in shaping a sustainable,
+              tech-driven future.
             </p>
           </article>
         </div>
