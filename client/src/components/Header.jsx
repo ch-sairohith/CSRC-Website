@@ -1,21 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Announcements from './Announcements.jsx'
 
 const links = [
-  { label: 'Home', icon: 'home', page: 'home' },
+  { label: 'Home', icon: 'home', to: '/' },
   {
     label: 'Projects',
     icon: 'projects',
     children: [
-      { label: 'Sponsored Projects', page: 'sponsored' },
-      { label: 'Consultancy Projects', page: 'consultancy' },
+      { label: 'Sponsored Projects', to: '/sponsored' },
+      { label: 'Consultancy Projects', to: '/consultancy' },
     ],
   },
-  { label: 'Research Facilities', icon: 'building', href: 'https://iittp.ac.in/istem' },
-  { label: 'Grant Calls', icon: 'doc', page: 'grants' },
+  { label: 'Research Facilities', icon: 'building', to: '/research-facilities' },
+  { label: 'Grant Calls', icon: 'doc', to: '/grants' },
   { label: 'Outcomes of CSRC', icon: 'chart' },
   { label: 'CSRC Activities', icon: 'calendar' },
-  { label: 'IP and Incubation', icon: 'bulb' },
+  { label: 'IP and Incubation', icon: 'bulb', to: '/ip' },
   { label: 'Contacts', icon: 'mail', href: '#contact' },
 ]
 
@@ -93,7 +94,9 @@ function Icon({ name }) {
   )
 }
 
-export default function Header({ page, onNavigate }) {
+export default function Header() {
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
   const [navOpen, setNavOpen] = useState(false)
   const [narrow, setNarrow] = useState(false)
@@ -101,7 +104,7 @@ export default function Header({ page, onNavigate }) {
   const navRef = useRef(null)
   const toggleRef = useRef(null)
   const closeRef = useRef(null)
-  const projectsOpen = page === 'consultancy' || page === 'sponsored'
+  const projectsOpen = pathname === '/sponsored' || pathname === '/consultancy'
 
   useEffect(() => {
     function onPointerDown(event) {
@@ -163,11 +166,11 @@ export default function Header({ page, onNavigate }) {
     toggleRef.current?.focus()
   }
 
-  function choose(next) {
+  function choose(to) {
     setMenuOpen(false)
     setNavOpen(false)
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
-    onNavigate(next)
+    navigate(to)
   }
 
   return (
@@ -257,37 +260,43 @@ export default function Header({ page, onNavigate }) {
               <div className="nav-drop-panel" role="menu" aria-label="Projects">
                 {link.children.map((child) => (
                   <button
-                    key={child.page}
+                    key={child.to}
                     type="button"
                     role="menuitem"
-                    className={page === child.page ? 'is-active' : undefined}
-                    onClick={() => choose(child.page)}
+                    className={pathname === child.to ? 'is-active' : undefined}
+                    onClick={() => choose(child.to)}
                   >
                     {child.label}
                   </button>
                 ))}
               </div>
             </div>
+          ) : link.to ? (
+            <Link
+              key={link.label}
+              to={link.to}
+              className={pathname === link.to ? 'is-active' : undefined}
+              aria-current={pathname === link.to ? 'page' : undefined}
+              onClick={() => {
+                setNavOpen(false)
+                setMenuOpen(false)
+              }}
+            >
+              <Icon name={link.icon} />
+              {link.label}
+            </Link>
           ) : (
             <a
               key={link.label}
-              href={link.page === 'home' ? '#home' : (link.href ?? '#')}
-              className={link.page && page === link.page ? 'is-active' : undefined}
-              aria-current={link.page && page === link.page ? 'page' : undefined}
-              onClick={
-                link.page
-                  ? (event) => {
-                      event.preventDefault()
-                      choose(link.page)
-                    }
-                  : (event) => {
-                      setNavOpen(false)
-                      setMenuOpen(false)
-                      if (!link.href || link.href.startsWith('http')) return
-                      event.preventDefault()
-                      document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                    }
-              }
+              href={link.href ?? '#'}
+              className={undefined}
+              onClick={(event) => {
+                setNavOpen(false)
+                setMenuOpen(false)
+                if (!link.href || link.href.startsWith('http')) return
+                event.preventDefault()
+                document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }}
             >
               <Icon name={link.icon} />
               {link.label}

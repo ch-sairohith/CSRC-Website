@@ -1342,6 +1342,46 @@ img {
   color: #4b4b4b;
 }
 
+.ip-list {
+  display: grid;
+  gap: 1rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ip-list li {
+  padding: 1.15rem 1.25rem 1.2rem;
+  background: #fff;
+  border: 1px solid #c8c1b6;
+}
+
+.ip-list h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+}
+
+.ip-list p {
+  margin: 0.45rem 0 0;
+  color: #4b4b4b;
+}
+
+.ip-link {
+  display: inline-flex;
+  margin-top: 0.85rem;
+  padding: 0.5rem 0.95rem;
+  background: var(--maroon);
+  color: #fff;
+  font-weight: 600;
+}
+
+.ip-link:hover {
+  background: var(--maroon-deep);
+}
+
 .projects-search {
   display: flex;
   align-items: center;
