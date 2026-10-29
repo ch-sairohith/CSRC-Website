@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import Announcements from './Announcements.jsx'
 
 const links = [
   { label: 'Home', icon: 'home', page: 'home' },
@@ -279,6 +280,7 @@ export default function Header({ page, onNavigate }) {
           ),
         )}
       </nav>
+      <Announcements />
     </header>
   )
 }

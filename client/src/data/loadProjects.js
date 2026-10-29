@@ -57,6 +57,18 @@ const money = new Intl.NumberFormat('en-IN', {
   maximumFractionDigits: 0,
 })
 
+const exactMoney = new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'INR',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})
+
+const crores = new Intl.NumberFormat('en-IN', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})
+
 export function formatCell(value, kind) {
   if (!value) return '—'
   if (kind === 'money') {
@@ -126,3 +138,53 @@ export const projectSets = {
     ],
   },
 }
+
+function sumRupees(rows, key) {
+  const paise = rows.reduce((total, row) => {
+    const amount = Number(row[key])
+    return total + (Number.isFinite(amount) ? Math.round(amount * 100) : 0)
+  }, 0)
+  return paise / 100
+}
+
+function countIndustryPartners(rows) {
+  const partners = new Set()
+  for (const row of rows) {
+    const name = (row['Funding Agency'] ?? '').trim().replace(/\s+/g, ' ')
+    if (name) partners.add(name.toLowerCase())
+  }
+  return partners.size
+}
+
+const sponsoredRows = projectSets.sponsored.rows
+const consultancyRows = projectSets.consultancy.rows
+const sanctionedAmount = sumRupees(sponsoredRows, 'Project Cost')
+const mouCount = sponsoredRows.filter((row) => row['MOU/NDA'] === 'MOU').length
+const industryPartners = countIndustryPartners(consultancyRows)
+
+export const homepageStats = [
+  {
+    value: String(sponsoredRows.length),
+    label: 'Sponsored Projects',
+    hoverTitle: 'Sponsored Projects',
+    hoverText: `${sponsoredRows.length} sponsored projects in the CSRC records.`,
+  },
+  {
+    value: `₹${crores.format(sanctionedAmount / 1e7)} Cr`,
+    label: 'Sanctioned Amount',
+    hoverTitle: 'Sanctioned Amount',
+    hoverText: `Total sanctioned amount for sponsored projects is ${exactMoney.format(sanctionedAmount)}.`,
+  },
+  {
+    value: String(mouCount),
+    label: 'MOUs',
+    hoverTitle: 'MOUs',
+    hoverText: `${mouCount} sponsored projects have an MOU on record.`,
+  },
+  {
+    value: String(industryPartners),
+    label: 'Industry Partners',
+    hoverTitle: 'Industry Partners',
+    hoverText: `${industryPartners} funding agencies across the consultancy projects.`,
+  },
+]

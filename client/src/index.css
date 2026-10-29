@@ -40,6 +40,90 @@ img {
   background: var(--cream);
 }
 
+.announce-bar {
+  display: flex;
+  align-items: stretch;
+  margin-top: 0.85rem;
+  background: #fff8ea;
+  border-bottom: 1px solid #eadfdf;
+}
+
+.announce-label {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0 0.95rem;
+  background: #a56d78;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.announce-viewport {
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+
+.announce-track {
+  display: flex;
+  width: max-content;
+  animation: announce-scroll var(--announce-duration, 60s) linear infinite;
+}
+
+.announce-bar:hover .announce-track,
+.announce-bar:focus-within .announce-track {
+  animation-play-state: paused;
+}
+
+.announce-track ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.announce-track li {
+  display: flex;
+  align-items: center;
+}
+
+.announce-track li::after {
+  content: '';
+  width: 0.32rem;
+  height: 0.32rem;
+  margin-inline: 1.15rem;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.announce-track a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.42rem 0;
+  color: #8f5964;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.announce-track a:hover,
+.announce-track a:focus-visible {
+  text-decoration: underline;
+}
+
+@keyframes announce-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .topbar {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -815,6 +899,14 @@ img {
   .nav-trigger,
   .nav-trigger::after {
     transition: none;
+  }
+
+  .announce-viewport {
+    overflow-x: auto;
+  }
+
+  .announce-track {
+    animation: none;
   }
 }
 
