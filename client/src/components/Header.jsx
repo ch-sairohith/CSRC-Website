@@ -11,7 +11,7 @@ const links = [
       { label: 'Consultancy Projects', page: 'consultancy' },
     ],
   },
-  { label: 'Research Facilities', icon: 'building' },
+  { label: 'Research Facilities', icon: 'building', href: 'https://iittp.ac.in/istem' },
   { label: 'Grant Calls', icon: 'doc', page: 'grants' },
   { label: 'Outcomes of CSRC', icon: 'chart' },
   { label: 'CSRC Activities', icon: 'calendar' },
@@ -283,7 +283,7 @@ export default function Header({ page, onNavigate }) {
                   : (event) => {
                       setNavOpen(false)
                       setMenuOpen(false)
-                      if (!link.href) return
+                      if (!link.href || link.href.startsWith('http')) return
                       event.preventDefault()
                       document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                     }
