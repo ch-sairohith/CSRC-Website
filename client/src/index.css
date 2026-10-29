@@ -1073,6 +1073,16 @@ img {
   color: var(--nj-strong);
 }
 
+.nj-date-original {
+  color: var(--nj-muted);
+  text-decoration: line-through;
+  white-space: nowrap;
+}
+
+.nj-job-date strong {
+  white-space: nowrap;
+}
+
 .nj-apply-btn {
   flex: none;
   padding: 8px 16px;

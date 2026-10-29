@@ -71,7 +71,15 @@ export default function JobAnnouncements() {
                         Positions : <strong>{job.position}</strong>
                       </p>
                       <p className="nj-job-date">
-                        Last Date : <strong>{job.lastDate}</strong>
+                        Last Date :{" "}
+                        {job.extendedDate ? (
+                          <>
+                            <s className="nj-date-original">{job.lastDate}</s> extended to{" "}
+                            <strong>{job.extendedDate}</strong>
+                          </>
+                        ) : (
+                          <strong>{job.lastDate}</strong>
+                        )}
                       </p>
                       {results.length > 0 && (
                         <p className="nj-job-status">
