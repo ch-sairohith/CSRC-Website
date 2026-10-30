@@ -14,8 +14,6 @@ const links = [
   },
   { label: 'Research Facilities', icon: 'building', to: '/research-facilities' },
   { label: 'Grant Calls', icon: 'doc', to: '/grants' },
-  { label: 'Outcomes of CSRC', icon: 'chart' },
-  { label: 'CSRC Activities', icon: 'calendar' },
   { label: 'IP and Incubation', icon: 'bulb', to: '/ip' },
   { label: 'Contacts', icon: 'mail', href: '#contact' },
 ]
