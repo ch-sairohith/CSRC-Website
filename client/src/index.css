@@ -186,19 +186,20 @@ img {
 }
 
 .csrc-logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 4.3rem;
-  min-height: 2.7rem;
+  display: grid;
+  place-items: center;
+  width: 3.4rem;
+  height: 3rem;
   background: #fff;
-  color: #2a2a2a;
   border: 1px solid #efeae3;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  line-height: 1.15;
-  text-align: center;
+  padding: 0.1rem;
+}
+
+.csrc-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .main-nav {
@@ -746,6 +747,106 @@ img {
   max-width: 16rem;
 }
 
+.contacts-section {
+  padding: clamp(2.75rem, 6vw, 4.5rem) 1.25rem;
+}
+
+.contacts-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.contacts-heading {
+  max-width: 42rem;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.contacts-eyebrow {
+  margin: 0 0 0.55rem;
+  color: var(--maroon);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.contacts-heading h2 {
+  margin: 0;
+  color: var(--navy);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.contacts-heading > p:last-child {
+  margin: 0.75rem auto 0;
+  color: #5b5b5b;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(2rem, 5vw, 4.5rem);
+  row-gap: 2.25rem;
+}
+
+.contact-group {
+  padding: 0 0 1.75rem;
+  border-bottom: 1px solid #ded8ce;
+}
+
+.contact-group h3 {
+  margin: 0 0 0.45rem;
+  color: var(--maroon);
+  font-size: clamp(1.15rem, 2vw, 1.3rem);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.contact-description {
+  margin: 0 0 1.2rem;
+  color: #656565;
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
+.contact-group ul {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-group li {
+  display: grid;
+  gap: 0.2rem;
+  overflow-wrap: anywhere;
+}
+
+.contact-group li span {
+  color: #555;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.contact-group li a {
+  color: var(--maroon);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.contact-group li a:hover,
+.contact-group li a:focus-visible {
+  text-decoration: underline;
+}
+
 .site-footer {
   color: #fff;
   background: linear-gradient(90deg, #9d2218 0%, #e24b12 58%, #f36a1a 100%);
@@ -872,6 +973,14 @@ img {
 }
 
 @media (max-width: 720px) {
+  .contacts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contacts-heading {
+    margin-bottom: 2rem;
+  }
+
   .topbar {
     grid-template-columns: 1fr auto;
   }

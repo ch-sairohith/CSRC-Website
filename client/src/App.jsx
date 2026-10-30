@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import About from './components/About.jsx'
+import Contacts from './components/Contacts.jsx'
 import Footer from './components/Footer.jsx'
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
@@ -51,6 +52,7 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/contacts" element={<main><Contacts /></main>} />
         <Route path="/sponsored" element={<main><Projects kind="sponsored" /></main>} />
         <Route path="/consultancy" element={<main><Projects kind="consultancy" /></main>} />
         <Route path="/grants" element={<main><Projects kind="grants" /></main>} />

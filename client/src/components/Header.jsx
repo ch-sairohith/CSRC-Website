@@ -12,11 +12,11 @@ const links = [
       { label: 'Consultancy Projects', to: '/consultancy' },
     ],
   },
-  { label: 'Research Facilities', icon: 'building', to: '/research-facilities' },
+  { label: 'Research Facilities', icon: 'building', href: 'https://iittp.ac.in/istem', external: true },
   { label: 'Grant Calls', icon: 'doc', to: '/grants' },
   { label: 'Project Recruitment', icon: 'doc', href: 'https://iittp.ac.in/Project_Positions', external: true },
   { label: 'IP and Incubation', icon: 'bulb', to: '/ip' },
-  { label: 'Contacts', icon: 'mail', href: '#contact' },
+  { label: 'Contacts', icon: 'mail', to: '/contacts' },
 ]
 
 function Icon({ name }) {
@@ -195,10 +195,8 @@ export default function Header() {
         </div>
 
         <div className="top-actions">
-          <a className="csrc-logo" href="#">
-            CSRC
-            <br />
-            LOGO
+          <a className="csrc-logo" href="#" aria-label="CSRC">
+            <img src={`${import.meta.env.BASE_URL}csrc-logo.png`} alt="" />
           </a>
         </div>
       </div>

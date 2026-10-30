@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 const social = [
   { label: 'Facebook', path: 'M14 8h2V5h-2c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.2l.8-3H13V9c0-.6.4-1 1-1z' },
   { label: 'X', path: 'M7 7l4.2 5.5L7.2 17H8.6l3.2-3.6L14.6 17H17l-4.4-5.8L16.6 7h-1.4l-2.9 3.3L9.4 7z' },
@@ -15,19 +17,14 @@ export default function Footer() {
           <a href="#">IIT Tirupati</a>
           <a href="#">CSRC Internal Site</a>
         </div>
-        <div id="contact">
+        <div>
           <h2>Contact Us</h2>
           <p>
             Centre for Sponsored Research &amp; Consultancy,
             <br />
             IIT Tirupati, Andhra Pradesh – 517619
           </p>
-          <p>
-            <a href="#">+91 00000 00000</a>
-          </p>
-          <p>
-            <a href="#">csrc@example.com</a>
-          </p>
+          <Link to="/contacts">View CSRC contact directory</Link>
         </div>
         <div>
           <h2>Social Media</h2>
