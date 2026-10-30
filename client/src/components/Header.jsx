@@ -14,6 +14,7 @@ const links = [
   },
   { label: 'Research Facilities', icon: 'building', to: '/research-facilities' },
   { label: 'Grant Calls', icon: 'doc', to: '/grants' },
+  { label: 'Project Recruitment', icon: 'doc', href: 'https://iittp.ac.in/Project_Positions', external: true },
   { label: 'IP and Incubation', icon: 'bulb', to: '/ip' },
   { label: 'Contacts', icon: 'mail', href: '#contact' },
 ]
@@ -287,6 +288,8 @@ export default function Header() {
             <a
               key={link.label}
               href={link.href ?? '#'}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
               className={undefined}
               onClick={(event) => {
                 setNavOpen(false)
