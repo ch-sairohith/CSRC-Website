@@ -664,8 +664,8 @@ img {
 }
 
 .leadership-image img {
-  width: 115px;
-  height: 115px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid var(--maroon-deep);
