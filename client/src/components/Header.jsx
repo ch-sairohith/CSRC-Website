@@ -176,17 +176,7 @@ export default function Header() {
     <header className="site-header">
       <div className="topbar">
         <a className="institute-mark" href="#" aria-label="IIT Tirupati">
-          <svg viewBox="0 0 36 36" aria-hidden="true">
-            <rect x="1" y="1" width="34" height="34" rx="3" fill="#fff" stroke="#7a1f2e" />
-            <path d="M18 6 8 12h20z" fill="#7a1f2e" />
-            <path d="M11 14h2.2v10H11zM16.9 14h2.2v10h-2.2zM22.8 14H25v10h-2.2z" fill="#7a1f2e" />
-            <path d="M9 24h18v2.2H9z" fill="#7a1f2e" />
-          </svg>
-          <span>
-            IIT
-            <br />
-            TIRUPATI
-          </span>
+          <img src={`${ import.meta.env.BASE_URL}iit-tirupati-logo.jpg`} alt = "IIT Tirupati Logo" width={"100vw"}></img>
         </a>
 
         <div className="brand">
