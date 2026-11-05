@@ -13,27 +13,6 @@ export default function About() {
 
         <div className="mission-vision">
           <article>
-            <h3>Dean (CSRC), IIT Tirupati</h3>
-            <p>
-              At CSRC, our vision is to transform innovative research into
-              actionable technological solutions. By fostering strong
-              academia-industry partnerships, we facilitate high-impact
-              consultancy, sponsored R&D, and technology commercialization
-              that address critical societal and industrial challenges. We
-              invite researchers, industry leaders, and public institutions
-              to explore collaborative opportunities with IIT Tirupati as
-              we continue to advance frontier science and technology.
-            </p>
-
-            <div className="leadership-image">
-              <img
-                src={`${import.meta.env.BASE_URL}dean-iit-tirupati.jpg`}
-                alt="Dean, IIT Tirupati"
-              />
-            </div>
-          </article>
-
-          <article>
             <h3>Director, IIT Tirupati</h3>
             <p>
               Innovation flourishes at the intersection of academia and
@@ -50,6 +29,27 @@ export default function About() {
               <img
                 src={`${import.meta.env.BASE_URL}director-iit-tirupati.jpg`}
                 alt="Director, IIT Tirupati"
+              />
+            </div>
+          </article>
+
+          <article>
+            <h3>Dean (CSRC), IIT Tirupati</h3>
+            <p>
+              At CSRC, our vision is to transform innovative research into
+              actionable technological solutions. By fostering strong
+              academia-industry partnerships, we facilitate high-impact
+              consultancy, sponsored R&D, and technology commercialization
+              that address critical societal and industrial challenges. We
+              invite researchers, industry leaders, and public institutions
+              to explore collaborative opportunities with IIT Tirupati as
+              we continue to advance frontier science and technology.
+            </p>
+
+            <div className="leadership-image">
+              <img
+                src={`${import.meta.env.BASE_URL}dean-cif-iit-tirupati.png`}
+                alt="Dean (CSRC), IIT Tirupati"
               />
             </div>
           </article>
