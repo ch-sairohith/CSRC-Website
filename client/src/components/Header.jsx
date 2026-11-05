@@ -175,19 +175,29 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="topbar">
-        <a className="institute-mark" href="#" aria-label="IIT Tirupati">
-          <img src={`${ import.meta.env.BASE_URL}iit-tirupati-logo.jpg`} alt = "IIT Tirupati Logo" width={"100vw"}></img>
-        </a>
+        <div className="header-logos">
+          <a className="institute-mark" href="https://iittp.ac.in/" aria-label="IIT Tirupati">
+            <img
+              src={`${import.meta.env.BASE_URL}iit-tirupati-logo.jpg`}
+              alt="IIT Tirupati Logo"
+            />
+          </a>
 
-        <div className="brand">
-          <p className="brand-title">Centre for Sponsored Research &amp; Consultancy</p>
-          <p className="brand-sub">Indian Institute of Technology Tirupati</p>
+          <a className="csrc-logo" href="#" aria-label="CSRC">
+            <img
+              src={`${import.meta.env.BASE_URL}csrc-logo.png`}
+              alt="CSRC Logo"
+            />
+          </a>
         </div>
 
-        <div className="top-actions">
-          <a className="csrc-logo" href="#" aria-label="CSRC">
-            <img src={`${import.meta.env.BASE_URL}csrc-logo.png`} alt="" />
-          </a>
+        <div className="brand">
+          <p className="brand-title">
+            Centre for Sponsored Research &amp; Consultancy
+          </p>
+          <p className="brand-sub">
+            Indian Institute of Technology Tirupati
+          </p>
         </div>
       </div>
 
