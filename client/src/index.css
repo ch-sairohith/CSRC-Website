@@ -634,9 +634,12 @@ img {
 }
 
 .mission-vision article {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: #f8dede;
   border-radius: 14px;
-  padding: 1.4rem 1.4rem 1.2rem;
+  padding: 1.4rem;
   box-shadow: 0 8px 24px rgba(40, 24, 16, 0.06);
 }
 
@@ -650,6 +653,23 @@ img {
 
 .mission-vision p {
   margin: 0;
+  line-height: 1.65;
+}
+
+.leadership-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.leadership-image img {
+  width: 115px;
+  height: 115px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--maroon-deep);
+  box-shadow: 0 4px 12px rgba(100, 24, 36, 0.18);
 }
 
 .stats {
