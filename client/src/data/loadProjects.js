@@ -78,46 +78,82 @@ export function formatCell(value, kind) {
   return value
 }
 
+function formatDuration(startValue, endValue) {
+  function parseDate(value) {
+    const match = /^(\d{2})-(\d{2})-(\d{4})$/.exec(value)
+    if (!match) return null
+    const [, dayValue, monthValue, yearValue] = match
+    const day = Number(dayValue)
+    const month = Number(monthValue) - 1
+    const year = Number(yearValue)
+    const timestamp = Date.UTC(year, month, day)
+    const date = new Date(timestamp)
+    if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month || date.getUTCDate() !== day) {
+      return null
+    }
+    return date
+  }
+
+  const start = parseDate(startValue)
+  const end = parseDate(endValue)
+  if (!start || !end || end < start) return ''
+
+  function addMonths(months) {
+    const monthIndex = start.getUTCMonth() + months
+    const year = start.getUTCFullYear() + Math.floor(monthIndex / 12)
+    const month = monthIndex % 12
+    const lastDay = new Date(Date.UTC(year, month + 1, 0)).getUTCDate()
+    return new Date(Date.UTC(year, month, Math.min(start.getUTCDate(), lastDay)))
+  }
+
+  let months =
+    (end.getUTCFullYear() - start.getUTCFullYear()) * 12 +
+    end.getUTCMonth() -
+    start.getUTCMonth()
+  if (addMonths(months) > end) months -= 1
+  const remainingDays = Math.round((end - addMonths(months)) / 86400000)
+  const years = Math.floor(months / 12)
+  const remainingMonths = months % 12
+  const parts = []
+
+  if (years) parts.push(`${years} ${years === 1 ? 'year' : 'years'}`)
+  if (remainingMonths) parts.push(`${remainingMonths} ${remainingMonths === 1 ? 'month' : 'months'}`)
+  if (remainingDays || parts.length === 0) {
+    parts.push(`${remainingDays} ${remainingDays === 1 ? 'day' : 'days'}`)
+  }
+  return parts.join(', ')
+}
+
 export const projectSets = {
   consultancy: {
     title: 'Consultancy Projects',
-    rows: parseCsv(consultancyCsv),
+    rows: parseCsv(consultancyCsv).map((row) => ({
+      ...row,
+      Duration: formatDuration(row['Start Date'], row['End Date']),
+    })),
     columns: [
       { key: 'Principal Invg', label: 'Principal Investigator' },
       { key: 'CO PI 1 Inst', label: 'Co-PI' },
-      { key: 'Consultancy Type', label: 'Consultancy Type' },
-      { key: 'Proj No.', label: 'Project No.' },
-      { key: 'Proj Title', label: 'Project Title', wide: true },
-      { key: 'Type of Consultancy', label: 'Type' },
-      { key: 'Financial Year', label: 'Financial Year' },
-      { key: 'Start Date', label: 'Start Date' },
-      { key: 'End Date', label: 'End Date' },
-      { key: 'Funding Agency', label: 'Funding Agency', wide: true },
       { key: 'Department', label: 'Department' },
+      { key: 'Proj Title', label: 'Project Title', wide: true },
+      { key: 'Financial Year', label: 'Financial Year' },
+      { key: 'Duration', label: 'Duration' },
+      { key: 'Funding Agency', label: 'Funding Agency', wide: true },
       { key: 'Status', label: 'Status' },
-      { key: 'International Project', label: 'International' },
-      { key: 'Project Cost Excluding GST', label: 'Project Cost (excl. GST)', format: 'money' },
     ],
   },
   sponsored: {
     title: 'Sponsored Projects',
     rows: parseCsv(sponsoredCsv),
     columns: [
-      { key: 'SlNo', label: 'Sl. No.' },
       { key: 'Principal Invg', label: 'Principal Investigator' },
       { key: 'CO PI 1 Inst', label: 'Co-PI' },
-      { key: 'Proj No.', label: 'Project No.' },
-      { key: 'Proj Title', label: 'Project Title', wide: true },
       { key: 'Department', label: 'Department' },
-      { key: 'Arear of Research', label: 'Area of Research', wide: true },
+      { key: 'Proj Title', label: 'Project Title', wide: true },
       { key: 'Financial Year', label: 'Financial Year' },
-      { key: 'Start Date', label: 'Start Date' },
-      { key: 'End Date', label: 'End Date' },
       { key: 'Duration of Project(Years)', label: 'Duration' },
-      { key: 'MOU/NDA', label: 'MOU/NDA' },
       { key: 'Funding Agency', label: 'Funding Agency', wide: true },
       { key: 'Status', label: 'Status' },
-      { key: 'Project Cost', label: 'Project Cost', format: 'money' },
     ],
   },
   grants: {

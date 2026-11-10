@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import About from './components/About.jsx'
 import Contacts from './components/Contacts.jsx'
@@ -9,6 +9,8 @@ import Projects from './components/Projects.jsx'
 import Stats from './components/Stats.jsx'
 import NewsAndJobs from './components/Newsandjobs.jsx'
 import IpIncubation from './components/IpIncubation.jsx'
+
+const FacultyExpertise = lazy(() => import('./components/FacultyExpertise.jsx'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -56,6 +58,14 @@ export default function App() {
         <Route path="/sponsored" element={<main><Projects kind="sponsored" /></main>} />
         <Route path="/consultancy" element={<main><Projects kind="consultancy" /></main>} />
         <Route path="/grants" element={<main><Projects kind="grants" /></main>} />
+        <Route
+          path="/faculty-expertise"
+          element={
+            <Suspense fallback={<main className="projects-page"><p className="projects-lead">Loading faculty expertise…</p></main>}>
+              <main><FacultyExpertise /></main>
+            </Suspense>
+          }
+        />
         <Route path="/ip" element={<main><IpIncubation /></main>} />
         <Route path="/research-facilities" element={<ExternalRedirect to="https://iittp.ac.in/istem" />} />
         <Route

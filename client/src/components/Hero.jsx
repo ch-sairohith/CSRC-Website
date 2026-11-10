@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import newsCsv from '../data/news.csv?raw'
 import { parseCsv } from '../data/loadProjects.js'
 
-const slides = parseCsv(newsCsv).filter((item) => item.title)
+const slides = parseCsv(newsCsv)
+  .filter((item) => item.title)
+  .slice(0, 3)
 
 function imageSrc(path) {
   if (!path || path.startsWith('http')) return path

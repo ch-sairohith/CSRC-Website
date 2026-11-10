@@ -1,43 +1,20 @@
 import { useEffect, useState } from "react";
+import newsCsv from "../data/news.csv?raw";
+import { parseCsv } from "../data/loadProjects.js";
 
-const news = [
-  {
-    "id": 1,
-    "title": "Vel commodo maiores laboris reprehenderit",
-    "image": "https://placehold.co/600x370?text=News+1",
-    "link": "#"
-  },
-  {
-    "id": 2,
-    "title": "Minim incididunt cillum eum itaque earum incididunt perferendis saepe commodo molestiae",
-    "image": "https://placehold.co/600x370?text=News+2",
-    "link": "#"
-  },
-  {
-    "id": 3,
-    "title": "Autem eum aute nostrud temporibus laboris sapiente mollit tempor itaque incididunt quibusdam culpa quam consectetur nulla tenetur lorem illum consequat quis earum tempor",
-    "image": "https://placehold.co/600x370?text=News+3",
-    "link": "#"
-  },
-  {
-    "id": 4,
-    "title": "Recusandae commodo alias temporibus adipiscing laborum enim aute exercitation",
-    "image": "https://placehold.co/600x370?text=News+4",
-    "link": "#"
-  },
-  {
-    "id": 5,
-    "title": "Maiores laboris voluptates laboris amet magna dolor ullamco quibusdam molestiae tempor illum doloribus incididunt veniam proident perferendis",
-    "image": "https://placehold.co/600x370?text=News+5",
-    "link": "#"
-  },
-  {
-    "id": 6,
-    "title": "Vel deserunt minim",
-    "image": "https://placehold.co/600x370?text=News+6",
-    "link": "#"
-  }
-];
+const news = parseCsv(newsCsv)
+  .filter((item) => item.title);
+
+function imageSrc(path) {
+  if (!path || path.startsWith("http")) return path;
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const relative = path.replace(/^\/?public\//, "").replace(/^\//, "");
+  const encoded = relative
+    .split("/")
+    .map((part) => encodeURI(part))
+    .join("/");
+  return `${base}/${encoded}`;
+}
 
 function useVisibleCount() {
   const get = () => (window.innerWidth < 1280 ? 1 : 2);
@@ -91,11 +68,15 @@ export default function NewsEvents() {
                 style={{ flex: `0 0 ${100 / visible}%` }}
               >
                 <div className="nj-card-inner">
-                  <img className="nj-card-img" src={item.image} alt="" loading="lazy" />
+                  {item.image ? (
+                    <img className="nj-card-img" src={imageSrc(item.image)} alt="" loading="lazy" />
+                  ) : null}
                   <h3 className="nj-card-title">{item.title}</h3>
-                  <a className="nj-view-btn" href={item.link}>
-                    View Details
-                  </a>
+                  {item.link?.trim() ? (
+                    <a className="nj-view-btn" href={item.link.trim()}>
+                      {item.button?.trim() || "View Details"}
+                    </a>
+                  ) : null}
                 </div>
               </article>
             ))}

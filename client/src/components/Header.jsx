@@ -13,6 +13,7 @@ const links = [
     ],
   },
   { label: 'Research Facilities', icon: 'building', href: 'https://iittp.ac.in/istem', external: true },
+  { label: 'Faculty Expertise', icon: 'building', to: '/faculty-expertise' },
   { label: 'Grant Calls', icon: 'doc', to: '/grants' },
   { label: 'Project Recruitment', icon: 'doc', href: 'https://iittp.ac.in/Project_Positions', external: true },
   { label: 'IP and Incubation', icon: 'bulb', to: '/ip' },
@@ -185,7 +186,7 @@ export default function Header() {
 
           <a className="csrc-logo" href="#" aria-label="CSRC">
             <img
-              src={`${import.meta.env.BASE_URL}csrc-logo.png`}
+              src={`${import.meta.env.BASE_URL}csrc-logo.svg`}
               alt="CSRC Logo"
             />
           </a>
