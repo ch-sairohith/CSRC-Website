@@ -586,6 +586,41 @@ img {
   padding: 4.2rem 1.25rem 3.2rem;
 }
 
+.about-reveal {
+  opacity: 0;
+  transform: translateY(-18px);
+  transition: opacity 2400ms ease, transform 2400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.about.is-visible .about-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about.is-visible .mission-vision article:first-child h3.about-reveal {
+  transition-delay: 0ms;
+}
+
+.about.is-visible .mission-vision article:first-child p.about-reveal {
+  transition-delay: 200ms;
+}
+
+.about.is-visible .mission-vision article:first-child .leadership-image.about-reveal {
+  transition-delay: 300ms;
+}
+
+.about.is-visible .mission-vision article:last-child h3.about-reveal {
+  transition-delay: 400ms;
+}
+
+.about.is-visible .mission-vision article:last-child p.about-reveal {
+  transition-delay: 500ms;
+}
+
+.about.is-visible .mission-vision article:last-child .leadership-image.about-reveal {
+  transition-delay: 600ms;
+}
+
 .section-wrap {
   max-width: var(--content-max);
   margin: 0 auto;
@@ -1065,6 +1100,12 @@ img {
 
   .announce-viewport {
     overflow-x: auto;
+  }
+
+  .about-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   .announce-track {
