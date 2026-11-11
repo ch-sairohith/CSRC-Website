@@ -115,7 +115,7 @@ export default function FacultyExpertise() {
                   <img className="faculty-image" src={member.image} alt="" loading="lazy" />
                 ) : null}
                 <div className="faculty-card-content">
-                  <h2>{displayText(member.name)}</h2>
+                  <h2 className="faculty-header"><a href={ member.webpage ? member.webpage : null} target='_blank'>{displayText(member.name)}</a></h2>
                   {member.designation ? <p className="faculty-designation">{displayText(member.designation)}</p> : null}
                   {member.department ? <p className="faculty-department">{displayText(member.department)}</p> : null}
                   {member.interests ? (
@@ -123,9 +123,6 @@ export default function FacultyExpertise() {
                   ) : null}
                   {member.almaMater ? <p><strong>Alma mater:</strong> {displayText(member.almaMater)}</p> : null}
                   <div className="faculty-links">
-                    {member.webpage ? (
-                      <a href={member.webpage} target="_blank" rel="noreferrer">Faculty profile</a>
-                    ) : null}
                     {member.email ? <a href={`mailto:${member.email}`}>{member.email}</a> : null}
                   </div>
                 </div>
