@@ -12,8 +12,8 @@ export default function Footer() {
       <div className="footer-main">
         <div>
           <h2>Quick Links</h2>
-          <a href="#">IIT Tirupati</a>
-          <a href="#">CSRC Internal Site</a>
+          <a href="https://www.iittp.ac.in/">IIT Tirupati</a>
+          <a href="http://10.21.24.53/">CSRC Internal Site</a>
         </div>
         <div>
           <h2>Contact Us</h2>
