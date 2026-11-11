@@ -111,21 +111,27 @@ export default function FacultyExpertise() {
           <div className="faculty-grid">
             {filteredFaculty.map((member) => (
               <article className="faculty-card" key={member.id}>
-                {member.image ? (
-                  <img className="faculty-image" src={member.image} alt="" loading="lazy" />
-                ) : null}
-                <div className="faculty-card-content">
-                  <h2 className="faculty-header"><a href={ member.webpage ? member.webpage : null} target='_blank'>{displayText(member.name)}</a></h2>
-                  {member.designation ? <p className="faculty-designation">{displayText(member.designation)}</p> : null}
-                  {member.department ? <p className="faculty-department">{displayText(member.department)}</p> : null}
-                  {member.interests ? (
-                    <p><strong>Areas of interest:</strong> {displayText(member.interests)}</p>
+                <div className="faculty-card-top">
+                  {member.image ? (
+                    <img className="faculty-image" src={member.image} alt="" loading="lazy" />
                   ) : null}
-                  {member.almaMater ? <p><strong>Alma mater:</strong> {displayText(member.almaMater)}</p> : null}
-                  <div className="faculty-links">
-                    {member.email ? <a href={`mailto:${member.email}`}>{member.email}</a> : null}
+                  <div className="faculty-card-identity">
+                    <h2 classN  ame="faculty-header"><a href={ member.webpage ? member.webpage : null} target='_blank'>{displayText(member.name)}</a></h2>
+                    {member.designation ? <p className="faculty-designation">{displayText(member.designation)}</p> : null}
+                    {member.department ? <p className="faculty-department">{displayText(member.department)}</p> : null}
                   </div>
                 </div>
+                {member.interests || member.almaMater || member.email ? (
+                  <div className="faculty-card-details">
+                    {member.interests ? (
+                      <p><strong>Areas of interest:</strong> {displayText(member.interests)}</p>
+                    ) : null}
+                    {member.almaMater ? <p><strong>Alma mater:</strong> {displayText(member.almaMater)}</p> : null}
+                    <div className="faculty-links">
+                      {member.email ? <a href={`mailto:${member.email}`}>{member.email}</a> : null}
+                    </div>
+                  </div>
+                ) : null}
               </article>
             ))}
           </div>
