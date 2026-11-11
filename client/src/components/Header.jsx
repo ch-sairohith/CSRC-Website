@@ -13,7 +13,7 @@ const links = [
     ],
   },
   { label: 'Research Facilities', icon: 'building', href: 'https://iittp.ac.in/istem', external: true },
-  { label: 'Faculty Expertise', icon: 'building', to: '/faculty-expertise' },
+  { label: 'Faculty Expertise', icon: 'faculty', to: '/faculty-expertise' },
   { label: 'Grant Calls', icon: 'doc', to: '/grants' },
   { label: 'Project Recruitment', icon: 'doc', href: 'https://iittp.ac.in/Project_Positions', external: true },
   { label: 'IP and Incubation', icon: 'bulb', to: '/ip' },
@@ -51,6 +51,14 @@ function Icon({ name }) {
       <svg {...common}>
         <path d="M4 20V6.5L12 3l8 3.5V20" />
         <path d="M9 20v-5h6v5M9 9.5h.01M15 9.5h.01M9 13h.01M15 13h.01" />
+      </svg>
+    )
+  }
+  if (name === 'faculty') {
+    return (
+      <svg {...common}>
+        <circle cx="9" cy="8" r="3" />
+        <path d="M3.5 20v-1.5a5.5 5.5 0 0 1 11 0V20zM16 5.5a3 3 0 0 1 0 5.8M17 14a5 5 0 0 1 3.5 4.5V20h-3" />
       </svg>
     )
   }
