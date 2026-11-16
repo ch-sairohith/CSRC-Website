@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { formatCell, projectSets } from '../data/loadProjects.js'
 
-const PAGE_SIZE = 8
+const PAGE_SIZE = 20
 const BLANK = '__blank__'
 
 function statusClass(value) {
