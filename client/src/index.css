@@ -1902,9 +1902,27 @@ img {
   min-width: 0;
 }
 
-.faculty-header a:hover {
+.faculty-header a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.faculty-header:hover,
+.faculty-header:has(a:focus-visible) {
   text-decoration: underline;
-  text-decoration-color: black;
+  text-decoration-color: #000;
+  text-underline-offset: 0.12em;
+}
+
+.faculty-email-label {
+  color: #000;
+  font-weight: 700;
+}
+
+.faculty-email a {
+  color: var(--maroon);
+  font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .faculty-image {

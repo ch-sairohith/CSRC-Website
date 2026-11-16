@@ -36,6 +36,13 @@ function displayText(value) {
   return value.replace(/&amp;/g, '&')
 }
 
+function emailAddresses(value) {
+  return value
+    .split(/\s*(?:[,;]|\/)\s*/)
+    .map((address) => address.trim())
+    .filter((address) => address.includes('@'))
+}
+
 export default function FacultyExpertise() {
   const [nameQuery, setNameQuery] = useState('')
   const [department, setDepartment] = useState('')
@@ -116,20 +123,36 @@ export default function FacultyExpertise() {
                     <img className="faculty-image" src={member.image} alt="" loading="lazy" />
                   ) : null}
                   <div className="faculty-card-identity">
-                    <h2 classN  ame="faculty-header"><a href={ member.webpage ? member.webpage : null} target='_blank'>{displayText(member.name)}</a></h2>
+                    <h2 className="faculty-header">
+                      {member.webpage ? (
+                        <a href={member.webpage} target="_blank" rel="noreferrer">
+                          {displayText(member.name)}
+                        </a>
+                      ) : (
+                        displayText(member.name)
+                      )}
+                    </h2>
+                    {member.email ? (
+                      <p className="faculty-email">
+                        <span className="faculty-email-label">Email:</span>{' '}
+                        {emailAddresses(member.email).map((address, index) => (
+                          <span key={address}>
+                            {index > 0 ? ', ' : null}
+                            <a href={`mailto:${address}`}>{address}</a>
+                          </span>
+                        ))}
+                      </p>
+                    ) : null}
                     {member.designation ? <p className="faculty-designation">{displayText(member.designation)}</p> : null}
                     {member.department ? <p className="faculty-department">{displayText(member.department)}</p> : null}
                   </div>
                 </div>
-                {member.interests || member.almaMater || member.email ? (
+                {member.interests || member.almaMater ? (
                   <div className="faculty-card-details">
                     {member.interests ? (
                       <p><strong>Areas of interest:</strong> {displayText(member.interests)}</p>
                     ) : null}
                     {member.almaMater ? <p><strong>Alma mater:</strong> {displayText(member.almaMater)}</p> : null}
-                    <div className="faculty-links">
-                      {member.email ? <a href={`mailto:${member.email}`}>{member.email}</a> : null}
-                    </div>
                   </div>
                 ) : null}
               </article>
