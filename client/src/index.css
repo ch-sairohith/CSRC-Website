@@ -862,44 +862,72 @@ img {
   line-height: 1.35;
 }
 
-.contact-description {
-  margin: 0 0 1.2rem;
-  color: #656565;
-  font-size: 0.96rem;
-  line-height: 1.55;
+.contact-name {
+  margin: 0 0 0.85rem;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
 }
 
-.contact-group ul {
-  display: grid;
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.contact-group li {
+.contact-email {
   display: grid;
   gap: 0.2rem;
+  margin: 0;
   overflow-wrap: anywhere;
 }
 
-.contact-group li span {
+.contact-email span {
   color: #555;
   font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.45;
 }
 
-.contact-group li a {
+.contact-email a,
+.contacts-meta a {
   color: var(--maroon);
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.5;
 }
 
-.contact-group li a:hover,
-.contact-group li a:focus-visible {
+.contact-email a:hover,
+.contact-email a:focus-visible,
+.contacts-meta a:hover,
+.contacts-meta a:focus-visible {
   text-decoration: underline;
+}
+
+.contacts-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem 2rem;
+  margin: 2.5rem 0 0;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid #ded8ce;
+}
+
+.contacts-meta div {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.contacts-meta dt {
+  color: var(--maroon);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.contacts-meta dd {
+  margin: 0;
+  color: var(--navy);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .site-footer {
@@ -1046,7 +1074,8 @@ img {
 }
 
 @media (max-width: 720px) {
-  .contacts-grid {
+  .contacts-grid,
+  .contacts-meta {
     grid-template-columns: 1fr;
   }
 
