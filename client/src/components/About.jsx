@@ -39,6 +39,12 @@ export default function About() {
 
         <div className="mission-vision">
           <article>
+            <div className="leadership-image about-reveal">
+              <img
+                src={`${import.meta.env.BASE_URL}director-iit-tirupati.jpg`}
+                alt="Director, IIT Tirupati"
+              />
+            </div>
             <h3 ref={directorHeadingRef} className="about-reveal">Director, IIT Tirupati</h3>
             <p className="about-reveal">
               Innovation flourishes at the intersection of academia and
@@ -50,16 +56,15 @@ export default function About() {
               you to partner with us in shaping a sustainable, tech-driven
               future.
             </p>
-
-            <div className="leadership-image about-reveal">
-              <img
-                src={`${import.meta.env.BASE_URL}director-iit-tirupati.jpg`}
-                alt="Director, IIT Tirupati"
-              />
-            </div>
           </article>
 
           <article>
+            <div className="leadership-image about-reveal">
+              <img
+                src={`${import.meta.env.BASE_URL}dean-cif-iit-tirupati.png`}
+                alt="Dean (CSRC), IIT Tirupati"
+              />
+            </div>
             <h3 className="about-reveal">Dean (CSRC), IIT Tirupati</h3>
             <p className="about-reveal">
               At CSRC, our vision is to transform innovative research into
@@ -71,13 +76,6 @@ export default function About() {
               to explore collaborative opportunities with IIT Tirupati as
               we continue to advance frontier science and technology.
             </p>
-
-            <div className="leadership-image about-reveal">
-              <img
-                src={`${import.meta.env.BASE_URL}dean-cif-iit-tirupati.png`}
-                alt="Dean (CSRC), IIT Tirupati"
-              />
-            </div>
           </article>
         </div>
       </div>
