@@ -150,6 +150,11 @@ export default function Projects({ kind }) {
 
         <div className="projects-table-wrap">
           <table className="projects-table">
+            <colgroup>
+              {set.columns.map((column) => (
+                <col key={column.key} style={column.width ? { width: column.width } : undefined} />
+              ))}
+            </colgroup>
             <thead>
               <tr>
                 {set.columns.map((column) => (
