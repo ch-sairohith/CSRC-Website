@@ -185,19 +185,29 @@ export default function Header() {
     <header className="site-header">
       <div className="topbar">
         <div className="header-logos">
-          <a className="institute-mark" href="https://iittp.ac.in/" aria-label="IIT Tirupati">
-            <img
-              src={`${import.meta.env.BASE_URL}iit-tirupati-logo.jpg`}
-              alt="IIT Tirupati Logo"
-            />
-          </a>
+          <div className="logo-lockup">
+            <a className="institute-mark" href="https://iittp.ac.in/" aria-label="IIT Tirupati">
+              <img
+                src={`${import.meta.env.BASE_URL}iit-tirupati-logo.jpg`}
+                alt="IIT Tirupati Logo"
+              />
+            </a>
 
-          <a className="csrc-logo" href="#" aria-label="CSRC">
-            <img
-              src={`${import.meta.env.BASE_URL}csrc-logo.svg`}
-              alt="CSRC Logo"
-            />
-          </a>
+            <span className="logo-divider" aria-hidden="true">
+              <svg viewBox="0 0 32 160" focusable="false">
+                <line x1="16" y1="8" x2="16" y2="62" stroke="#b7a36a" strokeWidth="2.4" />
+                <polygon points="16,70 28,88 16,106 4,88" fill="#8d1d2c" />
+                <line x1="16" y1="114" x2="16" y2="152" stroke="#b7a36a" strokeWidth="2.4" />
+              </svg>
+            </span>
+
+            <a className="csrc-logo" href="#" aria-label="CSRC">
+              <img
+                src={`${import.meta.env.BASE_URL}csrc-logo.svg`}
+                alt="CSRC Logo"
+              />
+            </a>
+          </div>
         </div>
 
         <div className="brand">

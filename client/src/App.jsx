@@ -22,6 +22,14 @@ function ScrollToTop() {
   return null
 }
 
+function NormalizePath() {
+  const { pathname, search, hash } = useLocation()
+  if (pathname.length > 1 && pathname.endsWith('/')) {
+    return <Navigate to={`${pathname.replace(/\/+$/, '')}${search}${hash}`} replace />
+  }
+  return null
+}
+
 function ExternalRedirect({ to }) {
   useEffect(() => {
     window.location.replace(to)
@@ -51,6 +59,7 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+      <NormalizePath />
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />

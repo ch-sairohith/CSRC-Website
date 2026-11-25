@@ -18,9 +18,11 @@ export default function Footer() {
         <div>
           <h2>Contact Us</h2>
           <p>
-            Centre for Sponsored Research &amp; Consultancy,
+            CSRC - Indian Institute of Technology Tirupati
             <br />
-            IIT Tirupati, Andhra Pradesh – 517619
+            Yerpedu – Venkatagiri Road, Yerpedu Post,
+            <br />
+            Tirupati District, Andhra Pradesh – 517 619
           </p>
           <Link to="/contacts">View CSRC contact directory</Link>
         </div>

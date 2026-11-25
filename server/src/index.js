@@ -10,6 +10,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') })
 const app = express()
 const port = Number(process.env.PORT) || 5000
 const clientDist = path.resolve(__dirname, '../../client/dist')
+const publicBase = '/CSRC-Website'
 
 app.use(cors())
 app.use(express.json())
@@ -19,9 +20,10 @@ app.get('/api/health', (_req, res) => {
 })
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(clientDist))
-  app.get('*', (_req, res) => {
-    res.sendFile(path.join(clientDist, 'index.html'))
+  const indexFile = path.join(clientDist, 'index.html')
+  app.use(publicBase, express.static(clientDist))
+  app.use(publicBase, (_req, res) => {
+    res.sendFile(indexFile)
   })
 }
 

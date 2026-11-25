@@ -138,43 +138,78 @@ img {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.7rem;
+  flex: none;
+  min-width: max-content;
+}
+
+.logo-lockup {
+  display: flex;
+  align-items: stretch;
+  flex: none;
+  height: 6.5rem;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.logo-divider {
+  display: flex;
+  align-items: stretch;
   flex: 0 0 auto;
+  margin-inline: -1px;
+  background: #fff;
+}
+
+.logo-divider svg {
+  display: block;
+  height: 100%;
+  width: auto;
+}
+
+.logo-divider line {
+  stroke-linecap: square;
 }
 
 .institute-mark,
 .csrc-logo {
-  display: grid;
-  place-items: center;
-  height: 6.4rem;
-  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   background: #fff;
-  border: 1px solid #efeae3;
-  border-radius: 5px;
-  padding: 0.25rem 0.4rem;
+  overflow: hidden;
+}
+
+.institute-mark {
+  padding: 0.15rem 0 0.15rem 0.35rem;
 }
 
 .csrc-logo {
-  width: 6.4rem;
-  overflow: hidden;
+  width: 5.7rem;
   padding: 0;
+}
+
+.institute-mark:focus-visible,
+.csrc-logo:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -3px;
 }
 
 .institute-mark img,
 .csrc-logo img {
   display: block;
-  height: 5.75rem;
+  height: 100%;
   width: auto;
-  max-width: 8.5rem;
+  max-width: none;
   object-fit: contain;
 }
 
 .csrc-logo img {
   width: 100%;
   height: 100%;
-  max-width: none;
   object-fit: cover;
-  transform: scale(1.2);
+  object-position: center 46%;
+  transform: scale(1.38);
 }
 
 .brand {
@@ -845,13 +880,20 @@ img {
 .contacts-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-items: center;
   column-gap: clamp(2rem, 5vw, 4.5rem);
   row-gap: 2.25rem;
 }
 
 .contact-group {
+  width: min(100%, 28rem);
   padding: 0 0 1.75rem;
   border-bottom: 1px solid #ded8ce;
+  text-align: center;
+}
+
+.contact-group.is-centered {
+  grid-column: 1 / -1;
 }
 
 .contact-group h3 {
@@ -872,6 +914,7 @@ img {
 
 .contact-email {
   display: grid;
+  justify-items: center;
   gap: 0.2rem;
   margin: 0;
   overflow-wrap: anywhere;
@@ -902,14 +945,18 @@ img {
 .contacts-meta {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-items: center;
   gap: 1.5rem 2rem;
   margin: 2.5rem 0 0;
   padding: 1.5rem 0 0;
   border-top: 1px solid #ded8ce;
+  text-align: center;
 }
 
 .contacts-meta div {
   display: grid;
+  justify-items: center;
+  width: min(100%, 28rem);
   gap: 0.35rem;
 }
 
@@ -1040,6 +1087,16 @@ img {
   .nj-wrapper {
     gap: 56px;
     padding-inline: 8px;
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 981px) {
+  .logo-lockup {
+    height: 5.35rem;
+  }
+
+  .csrc-logo {
+    width: 4.7rem;
   }
 }
 

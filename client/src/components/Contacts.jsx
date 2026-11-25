@@ -23,6 +23,7 @@ const directory = [
     role: 'Deputy Registrar',
     name: 'Mr. Rajan Babu Lankapalli',
     email: 'dr_csrc@iittp.ac.in',
+    centered: true,
   },
 ]
 
@@ -39,7 +40,7 @@ export default function Contacts() {
         </div>
         <div className="contacts-grid">
           {directory.map((person) => (
-            <article className="contact-group" key={person.email}>
+            <article className={`contact-group${person.centered ? ' is-centered' : ''}`} key={person.email}>
               <h3>{person.role}</h3>
               <p className="contact-name">{person.name}</p>
               <p className="contact-email">
